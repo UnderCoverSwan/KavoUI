@@ -192,6 +192,8 @@ function Kavo.CreateLib(kavName, themeList)
             v:Destroy()
         end
     end
+    
+    CloseBind = closebind or Enum.KeyCode.RightControl
     local ScreenGui = Instance.new("ScreenGui")
     local Main = Instance.new("Frame")
     local MainCorner = Instance.new("UICorner")
@@ -388,19 +390,6 @@ function Kavo.CreateLib(kavName, themeList)
         Objects[tabButton] = "TextColor3"
         tabButton.TextSize = 14.000
         tabButton.BackgroundTransparency = 1
-
-	game:GetService('UserInputService').InputBegan:connect(function(key, gpe)
-           if (not gpe) then
-               if key.KeyCode == Enum.KeyCode.RightControl then
-                   library.toggled = not library.toggled;
-                   for i, data in next, library.queue do
-                       local pos = (library.toggled and data.p or UDim2.new(-1, 0, -0.5,0))
-                       data.w:TweenPosition(pos, (library.toggled and 'Out' or 'In'), 'Quad', 0.15, true)
-                       wait();
-                   end
-               end
-           end
-       end)
 
         if first then
             first = false
@@ -659,6 +648,30 @@ function Kavo.CreateLib(kavName, themeList)
                 Objects[btnInfo] = "TextColor3"
                 btnInfo.TextSize = 14.000
                 btnInfo.TextXAlignment = Enum.TextXAlignment.Left
+		
+				    local uitoggled = false
+		    UserInputService.InputBegan:Connect(
+			function(io, p)
+			    if io.KeyCode == CloseBind then
+				if uitoggled == false then
+				    Main:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .6, true)
+				    uitoggled = true
+				    wait(.5)
+				    knixhub.Enabled = false
+				else
+				    Main:TweenSize(
+					UDim2.new(0, 560, 0, 319),
+					Enum.EasingDirection.Out,
+					Enum.EasingStyle.Quart,
+					.6,
+					true
+				    )
+				    knixhub.Enabled = true
+				    uitoggled = false
+				end
+			    end
+			end
+		    )
 
                 if themeList.SchemeColor == Color3.fromRGB(255,255,255) then
                     Utility:TweenObject(moreInfo, {TextColor3 = Color3.fromRGB(0,0,0)}, 0.2)
