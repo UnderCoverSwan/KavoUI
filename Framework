@@ -648,30 +648,6 @@ function Kavo.CreateLib(kavName, themeList)
                 Objects[btnInfo] = "TextColor3"
                 btnInfo.TextSize = 14.000
                 btnInfo.TextXAlignment = Enum.TextXAlignment.Left
-		
-				    local uitoggled = false
-		    UserInputService.InputBegan:Connect(
-			function(io, p)
-			    if io.KeyCode == CloseBind then
-				if uitoggled == false then
-				    Main:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .6, true)
-				    uitoggled = true
-				    wait(.5)
-				    knixhub.Enabled = false
-				else
-				    Main:TweenSize(
-					UDim2.new(0, 560, 0, 319),
-					Enum.EasingDirection.Out,
-					Enum.EasingStyle.Quart,
-					.6,
-					true
-				    )
-				    knixhub.Enabled = true
-				    uitoggled = false
-				end
-			    end
-			end
-		    )
 
                 if themeList.SchemeColor == Color3.fromRGB(255,255,255) then
                     Utility:TweenObject(moreInfo, {TextColor3 = Color3.fromRGB(0,0,0)}, 0.2)
@@ -2582,5 +2558,17 @@ function Kavo.CreateLib(kavName, themeList)
     end  
     return Tabs
 end
+
+function onKeyPress(inputObject, gameProcessedEvent)
+    if inputObject.KeyCode == Enum.KeyCode.RightShift then
+        if Main.Visible == false then
+            Main.Visible = true
+        else
+            Main.Visible = false
+        end
+    end
+end
+    
+game:GetService("UserInputService").InputBegan:connect(onKeyPress)
 
 return Kavo
